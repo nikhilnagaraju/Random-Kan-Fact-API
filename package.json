@@ -1,0 +1,11 @@
+{
+  "name": "randomfacts",
+  "version": "1.0.0",
+  "description": "A simple REST api to fetch a Random kannada fact",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikhil N",
+  "license": "MIT"
+}
