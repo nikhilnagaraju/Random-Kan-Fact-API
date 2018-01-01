@@ -4,8 +4,16 @@
   "description": "A simple REST api to fetch a Random kannada fact",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "author": "Nikhil N",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.7"
+  }
 }
