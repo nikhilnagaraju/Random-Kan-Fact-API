@@ -32,16 +32,19 @@ module.exports = function(app, databaseObj) {
                   knfact: req.body.knfact ,
                   imgurl: req.body.imgurl
                  };
-    db.collection('factslist').insert(fact, (err, result) => {
-      if (err) {
-        res.send({ 'error': 'An error has occurred while posting data, possibly a redundant data/ an authorization error' });
-        console.log(err);
-      } else if (fact._id == null || !typeof parseInt(fact.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
-        res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
-      } else {
-        res.send(result.ops[0]);
-      }
-    });
+    if (fact._id == null || !typeof parseInt(fact.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
+      res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
+    }
+    else {
+      db.collection('factslist').insert(fact, (err, result) => {
+        if (err) {
+          res.send({ 'error': 'An error has occurred while posting data, possibly a redundant data/ an authorization error' });
+          console.log(err);
+        } else  else {
+          res.send(result.ops[0]);
+        }
+      });
+    }
   });
 
   app.delete('/fact/:id', (req, res) => {
@@ -51,6 +54,18 @@ module.exports = function(app, databaseObj) {
         res.send({'error':'An error has occurred while deleting data'});
       } else {
         res.send({'fact': req.params.id + ' deleted'});
+      }
+    });
+  });
+
+  app.put('/notes/:id', (req, res) => {
+    const details = { '_id': req.params.id };
+    const note = { text: req.body.body, title: req.body.title };
+    db.collection('factslist').update(details, note, (err, result) => {
+      if (err) {
+          res.send({'error':'An error has occurred while updating data'});
+      } else {
+          res.send(note);
       }
     });
   });
