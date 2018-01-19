@@ -40,7 +40,7 @@ module.exports = function(app, databaseObj) {
         if (err) {
           res.send({ 'error': 'An error has occurred while posting data, possibly a redundant data/ an authorization error' });
           console.log(err);
-        } else  else {
+        } else {
           res.send(result.ops[0]);
         }
       });
@@ -48,7 +48,7 @@ module.exports = function(app, databaseObj) {
   });
 
   app.delete('/fact/:id', (req, res) => {
-    const details = { '_id': req.params.id };
+    const details = { _id: req.params.id };
     db.collection('factslist').remove(details, (err, item) => {
       if (err) {
         res.send({'error':'An error has occurred while deleting data'});
@@ -58,16 +58,24 @@ module.exports = function(app, databaseObj) {
     });
   });
 
-  app.put('/notes/:id', (req, res) => {
-    const details = { '_id': req.params.id };
-    const note = { text: req.body.body, title: req.body.title };
-    db.collection('factslist').update(details, note, (err, result) => {
-      if (err) {
-          res.send({'error':'An error has occurred while updating data'});
-      } else {
-          res.send(note);
-      }
-    });
+  app.put('/fact/:id', (req, res) => {
+    const replace = { _id: req.params.id };
+    const fact = { enfact: req.body.enfact,
+                   knfact: req.body.knfact ,
+                   imgurl: req.body.imgurl
+                 };
+    if ( !typeof parseInt(req.params.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
+      res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
+    }
+    else {
+      db.collection('factslist').update(replace, fact, (err, result) => {
+        if (err) {
+            res.send({'error':'An error has occurred while updating data'});
+        } else {
+            res.send(fact);
+        }
+      });
+    }
   });
 
   app.get('/facts', (req, res) => {
