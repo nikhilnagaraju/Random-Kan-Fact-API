@@ -1,0 +1,8 @@
+//an example db.js file to store, get Mongodb/ mlab url
+
+//a working db url/db path looks like (can be local too)
+//url : "mongodb://mclient:mclient@ds135917.mlab.com:35917/factsdb"
+
+module.exports = {
+  url : "mongodb://<mlab_username>:<mlab_user_password>@<hosted mlab domain>:35917/<db_name>"
+};
