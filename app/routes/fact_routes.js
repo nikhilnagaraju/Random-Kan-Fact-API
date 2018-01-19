@@ -28,18 +28,15 @@ module.exports = function(app, databaseObj) {
       var idArr = getRandomArray();
       var factitems= [];
       var objt= {}
-      for (var i = 0; i < idArr.length; i++) {
-        var details = { '_id': idArr[i] };
-        db.collection('factslist').findOne(details, (err, item) => {
+        db.collection('factslist').find( { '_id': { $all: idArr }}, (err, item) => {
           if (err) {
             res.send({'error':'An error has occurred while fetching data'});
           } else {
-            factitems.push(item);
+            console.log(JSON.stringify(item));
+            res.send(item);
+            // factitems.push(item);
           }
         });
-      }
-
-      res.send(factitems);
   });
 
   function getRandomIntInclusive(min, max) {
