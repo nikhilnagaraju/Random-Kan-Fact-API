@@ -6,8 +6,8 @@ module.exports = function(app, databaseObj) {
   const mini=1;
   var maxi=0;
 
-//GET random fact
 
+  //GET random fact
   app.get('/random', (req, res) => {
       var dbcount =0;
       // let coll = db.collection('factslist');
@@ -24,7 +24,7 @@ module.exports = function(app, databaseObj) {
       });
   });
 
-
+  // POST a random fact
   app.post('/fact', (req, res) => {
     const fact = {
                   _id: req.body.id ,
@@ -47,6 +47,7 @@ module.exports = function(app, databaseObj) {
     }
   });
 
+  // DELETE a Random fact with id
   app.delete('/fact/:id', (req, res) => {
     const details = { _id: req.params.id };
     db.collection('factslist').remove(details, (err, item) => {
@@ -58,6 +59,7 @@ module.exports = function(app, databaseObj) {
     });
   });
 
+  // UPDATE a Random fact with id
   app.put('/fact/:id', (req, res) => {
     const replace = { _id: req.params.id };
     const fact = { enfact: req.body.enfact,
@@ -78,6 +80,7 @@ module.exports = function(app, databaseObj) {
     }
   });
 
+  // GET an array of 10 Random Facts
   app.get('/facts', (req, res) => {
       var idArr = getRandomArray();
       var factitems= [];
@@ -94,9 +97,9 @@ module.exports = function(app, databaseObj) {
   });
 
   function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
   }
 
   function getRandomArray(){
