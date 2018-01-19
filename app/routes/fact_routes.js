@@ -24,6 +24,26 @@ module.exports = function(app, databaseObj) {
       });
   });
 
+
+  app.post('/fact', (req, res) => {
+    const fact = {
+                  _id: req.body.id ,
+                  enfact: req.body.enfact,
+                  knfact: req.body.knfact ,
+                  imgurl: req.body.imgurl
+                 };
+    db.collection('factslist').insert(fact, (err, result) => {
+      if (err) {
+        res.send({ 'error': 'An error has occurred while posting data, possibly a redundant data/ an authorization error' });
+        console.log(err);
+      } else if (fact._id == null || !typeof parseInt(fact.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
+        res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
+      } else {
+        res.send(result.ops[0]);
+      }
+    });
+  });
+
   app.get('/facts', (req, res) => {
       var idArr = getRandomArray();
       var factitems= [];
