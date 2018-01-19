@@ -44,6 +44,17 @@ module.exports = function(app, databaseObj) {
     });
   });
 
+  app.delete('/fact/:id', (req, res) => {
+    const details = { '_id': req.params.id };
+    db.collection('factslist').remove(details, (err, item) => {
+      if (err) {
+        res.send({'error':'An error has occurred while deleting data'});
+      } else {
+        res.send({'fact': req.params.id + ' deleted'});
+      }
+    });
+  });
+
   app.get('/facts', (req, res) => {
       var idArr = getRandomArray();
       var factitems= [];
