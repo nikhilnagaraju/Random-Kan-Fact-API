@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 MongoClient.connect(db.url, (err, database) => {
   if (err) return console.log(err)
   require('./app/routes')(app, database);
-  app.listen(port, () => {
+  app.listen(process.env.PORT || port, () => {
     console.log('Server running on ' + port);
   });
 })
