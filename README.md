@@ -1,6 +1,11 @@
 # Random Kannada Fact API
 
 A simple REST API to fetch random kannada fact.
+The API is hosted on [Heroku](https://heroku.com) at [https://random-kan-fact.herokuapp.com/](https://random-kan-fact.herokuapp.com/) with a remote db hosted on [mlab](https://mlab.com).
+
+Random fact can be fetched instantly with the endpoint: 
+[https://random-kan-fact.herokuapp.com/random](https://random-kan-fact.herokuapp.com/random)
+
 
 - [Setup](#setup)
 	- [Required Dependencies](#required-dependencies)
