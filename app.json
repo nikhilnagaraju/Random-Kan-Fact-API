@@ -1,0 +1,8 @@
+{
+  "name": "Random Kannada fact",
+  "description": "A simple REST API to fetch random fact about kannada, karnataka in both kannada & English.",
+  "repository": "https://github.com/nikhilnagaraju/Random-Kan-Fact-API",
+  "logo": "https://avatars3.githubusercontent.com/u/16720715?s=460&v=4",
+  "keywords": ["node", "express", "heroku", "random", "kannada", "fact"],
+  "image": "heroku/nodejs"
+}
