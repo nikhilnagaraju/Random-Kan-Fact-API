@@ -161,3 +161,4 @@ The end point (**WIP**) would return a JSON array object containing random Kanna
 -  *The given example credentials for [mlab](http://mlab.com) have **read-only** permission and hence write operations like `POST`,  `UPDATE`, `DELETE`  wont work, these will return an error object with authorisation error.*
 -  If you need better performance or if you are using it for commercial use, host the API and DB in prod environment and don't use this sandox hosted db.
 -  If found any bugs with the API report in [issue tracker](https://github.com/nikhilnagaraju/Random-Kan-Fact-API/issues).
+-  Licensed under [GNU GPL v3.0](LICENSE).
