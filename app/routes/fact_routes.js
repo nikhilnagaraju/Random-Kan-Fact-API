@@ -7,6 +7,13 @@ module.exports = function(app, databaseObj) {
   var maxi=0;
 
 
+  //GET Status for default path
+  app.get('/', (req, res) => {
+    var item = {"Status":"Say thanks to SOF, API is alive"};
+    res.send(item);
+  });
+
+
   //GET random fact
   app.get('/random', (req, res) => {
       var dbcount =0;
