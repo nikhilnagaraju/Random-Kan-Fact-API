@@ -14,27 +14,26 @@ A simple REST API to fetch random kannada fact.
 - [Note](#note)
 
 
-  ## Setup
+## Setup
   Need a remote or local mongodb depolyment. Can use [mlab](http://mlab.com) for free tier, easy remote deployment. Create a local db or on mlab and then import the JSON in config dir.
 
-  ```
+```sh
 $ mongoimport  --uri="mongodb://<db_username>:<db_usr_passwd>@<remote path to db>:63367/<db_name>"  --collection <db_collection_name> --file importdb.json --jsonArray
+```
+Create a `db.js` file under config directory to export Mongodb/ mlab url OR alternatively use the db.js_example. The file should have a url exported like
 
-  ```
-  Create a `db.js` file under config directory to export Mongodb/ mlab url OR alternatively use the db.js_example. The file should have a url exported like
-  ```
+```sh
 module.exports = {
   url : "mongodb://<mlab_username>:<mlab_user_password>@<hosted mlab domain>:35917/<db_name>"
 };
+```
 
-  ```
+An actual working db url/path looks like (can use local path too)
 
-  An actual working db url/path looks like (can use local path too)
-
-  `url : "mongodb://mclient:mclient@ds135917.mlab.com:35917/factsdb"`
+`url : "mongodb://mclient:mclient@ds135917.mlab.com:35917/factsdb"`
 
 
-  ## Required Dependencies
+## Required Dependencies
   - Express - for server & routing
   - MongoDB - for Database
   - Nodemon - to monitor code changes & build
@@ -61,7 +60,7 @@ The API is RESTFUL and returns results in JSON. You should always url-encode par
     http://localhost:8000/random
 
 The end point would return a random Kannada fact, a corresponding English translated fact and a relevant img url as JSON object as below.
-```
+```sh
 {
     "_id": "157",
     "enfact": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
@@ -79,7 +78,7 @@ The end point would return a random Kannada fact, a corresponding English transl
     http://localhost:8000/fact
 
 The end point would return the posted fact object on success as below, or would return an authorization, redundant error if any.
-```
+```sh
 {
   "_id": "35",
   "enfact": "The first power station in Asia was set up in Karnataka at Shivanasamudra in 1902 to produce hydroelectric power.",
