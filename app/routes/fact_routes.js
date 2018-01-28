@@ -2,6 +2,8 @@ module.exports = function(app, databaseObj) {
 
   const db = databaseObj.db('factsdb')
   var ObjectID = require('mongodb').ObjectID;
+  var util = require('util');
+  // var stringify1 = require('json-stringify-safe');
 
   const mini=1;
   var maxi=0;
@@ -89,16 +91,18 @@ module.exports = function(app, databaseObj) {
 
   // GET an array of 10 Random Facts
   app.get('/facts', (req, res) => {
-      var idArr = getRandomArray();
       var factitems= [];
-      var objt= {}
-        db.collection('factslist').find( { '_id': { $all: idArr }}, (err, item) => {
+      var objt= {};
+        db.collection('factslist').aggregate([{$match: {}}, { $sample: { size: 10 } }],(err, item) => {
           if (err) {
             res.send({'error':'An error has occurred while fetching data'});
           } else {
-            console.log(JSON.stringify(item));
-            res.send(item);
-            // factitems.push(item);
+            // var item1 = util.inspect(item);
+            var item1 = item[0];
+            console.log(item1);
+            factitems.push(item1);
+            objt.randomArray = factitems;
+            res.send(objt);
           }
         });
   });
