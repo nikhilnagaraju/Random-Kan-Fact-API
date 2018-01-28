@@ -33,6 +33,20 @@ module.exports = function(app, databaseObj) {
       });
   });
 
+  // GET an array of 10 Random Facts
+  app.get('/facts', (req, res) => {
+      var objt= {};
+        db.collection('factslist').aggregate([{$match: {}}, { $sample: { size: 10 } }]).toArray( function (err, item) {
+          if (err) {
+            res.send({'error':'An error has occurred while fetching data'});
+          } else {
+            objt.randomArray = item;
+            console.log(objt);
+            res.send(objt);
+          }
+        });
+  });
+  
   // POST a random fact
   app.post('/fact', (req, res) => {
     const fact = {
@@ -87,24 +101,6 @@ module.exports = function(app, databaseObj) {
         }
       });
     }
-  });
-
-  // GET an array of 10 Random Facts
-  app.get('/facts', (req, res) => {
-      var factitems= [];
-      var objt= {};
-        db.collection('factslist').aggregate([{$match: {}}, { $sample: { size: 10 } }],(err, item) => {
-          if (err) {
-            res.send({'error':'An error has occurred while fetching data'});
-          } else {
-            // var item1 = util.inspect(item);
-            var item1 = item[0];
-            console.log(item1);
-            factitems.push(item1);
-            objt.randomArray = factitems;
-            res.send(objt);
-          }
-        });
   });
 
   function getRandomIntInclusive(min, max) {
