@@ -57,7 +57,7 @@ Clone the repo,
 
 ## API overview
 
-The API is RESTFUL and returns results in JSON. You should always url-encode parameter values when using the API. The examples in this document do *not* url-encode parameter values. JSON formats returned by the API are as below:
+The API is RESTFUL and returns results as JSON. You should always url-encode parameter values when using the API. The examples in this document do *not* url-encode parameter values. The example endpoints for all types of operation and JSON formats returned by the API are as below:
 
 ### GET random fact
 
@@ -66,6 +66,7 @@ The API is RESTFUL and returns results in JSON. You should always url-encode par
 | `/random` | no parameters | Fetch a random kannada fact |
 
     http://localhost:8000/random
+    http://random-kan-fact.herokuapp.com/random
 
 The end point would return a random Kannada fact, a corresponding English translated fact and a relevant img url as JSON object as below.
 ```sh
@@ -84,6 +85,7 @@ The end point would return a random Kannada fact, a corresponding English transl
 | `/facts` | no parameters | Returns a JSON array object containing random fact objects |
 
     http://localhost:8000/facts
+    http://random-kan-fact.herokuapp.com/facts
 
 The end point returns a JSON array object with key `randomArray` and contains 10 random Kannada fact objects as below.
 ```
@@ -119,6 +121,7 @@ The end point returns a JSON array object with key `randomArray` and contains 10
 
 
     http://localhost:8000/fact
+    http://random-kan-fact.herokuapp.com/fact
 
 The end point would return the posted fact object on success as below, or would return an authorization, redundant error if any.
 ```sh
@@ -137,6 +140,7 @@ The end point would return the posted fact object on success as below, or would 
 
 
     http://localhost:8000/fact/250
+    http://random-kan-fact.herokuapp.com/fact/250
 
 The end point would return the updated fact object on success as below, or would return an error if any.
 ```
@@ -154,6 +158,7 @@ The end point would return the updated fact object on success as below, or would
 | `/fact/<id>` | no parameters | delete a fact document with reference to id in db |
 
     http://localhost:8000/fact/250
+    http://random-kan-fact.herokuapp.com/fact/250
 
 The end point would return an object with the deleted fact-id on success as below, or would return an error if any.
 ```
