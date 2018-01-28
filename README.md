@@ -14,11 +14,11 @@ Random kannada fact with a [json structure](#get-random-fact) can be fetched ins
 	- [Required Dependencies](#required-dependencies)
 - [To Develop or debug](#to-debug-the-api)
 - [API overview](#api-overview)
-	- [Get random fact](#get-random-fact)
+	- [GET random fact](#get-random-fact)
+	- [GET an array of random facts](#get-list-of-random-facts)
 	- [POST fact](#post-fact)
 	- [PUT fact](#put-fact)
 	- [DELETE fact](#delete-fact)
-	- [GET array of facts](#get-list-of-random-facts)
 - [Note](#note)
 
 
@@ -76,6 +76,41 @@ The end point would return a random Kannada fact, a corresponding English transl
     "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
 }
 ```
+
+### GET list of random facts
+
+| End Point | Requires | Description |
+|:-----------|:---------------|-------------|
+| `/facts` | no parameters | Returns a JSON array object containing random fact objects |
+
+    http://localhost:8000/facts
+
+The end point returns a JSON array object with key `randomArray` and contains 10 random Kannada fact objects as below.
+```
+{
+ "randomArray": [
+	{
+            "_id": "157",
+            "enfact": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
+            "knfact": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
+            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
+    	},
+	{
+	    "_id": "254",
+	    "enfact": "The first Kannada serial 'Sihikahi' (meaning bittersweet in Kannada) was produced and directed by H N K Murthy.",
+	    "knfact": "ಕನ್ನಡದ ಮೊದಲ ಸರಣಿ(ಸೀರಿಯಲ್) “ಸಿಹಿಕಹಿ”ಯನ್ನು ಎಚ್.ಎನ್.ಕೆ ಮೂರ್ತಿ ನಿರ್ಮಿಸಿ, ನಿರ್ದೇಶಿಸಿದರು. ",
+	    "imgurl": ""
+	  },
+		{
+	    "_id": "206",
+	    "enfact": "Hubli is known as Chota Mumbai",
+	    "knfact": "ಹುಬ್ಬಳ್ಳಿಯನ್ನು ಛೋಟಾ ಮುಂಬೈ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ ",
+	    "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/206.jpg"
+	  }
+	]
+}
+```
+
 ### POST fact
 
 | End Point  | Requires | Description |
@@ -124,38 +159,6 @@ The end point would return an object with the deleted fact-id on success as belo
 ```
 {
 	"fact": "250 deleted"
-}
-```
-
-### GET list of random facts
-
-| End Point | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/facts` | no parameters | Returns a JSON array of random fact objects |
-
-    http://localhost:8000/facts
-
-The end point (**WIP**) would return a JSON array object containing random Kannada fact objects as below.
-```
-{
-	[{
-        "_id": "157",
-        "enfact": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
-        "knfact": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
-        "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
-    },
-		{
-	    "_id": "254",
-	    "enfact": "The first Kannada serial 'Sihikahi' (meaning bittersweet in Kannada) was produced and directed by H N K Murthy.",
-	    "knfact": "ಕನ್ನಡದ ಮೊದಲ ಸರಣಿ(ಸೀರಿಯಲ್) “ಸಿಹಿಕಹಿ”ಯನ್ನು ಎಚ್.ಎನ್.ಕೆ ಮೂರ್ತಿ ನಿರ್ಮಿಸಿ, ನಿರ್ದೇಶಿಸಿದರು. ",
-	    "imgurl": ""
-	  },
-		{
-	    "_id": "206",
-	    "enfact": "Hubli is known as Chota Mumbai",
-	    "knfact": "ಹುಬ್ಬಳ್ಳಿಯನ್ನು ಛೋಟಾ ಮುಂಬೈ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ ",
-	    "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/206.jpg"
-	  }]
 }
 ```
 
