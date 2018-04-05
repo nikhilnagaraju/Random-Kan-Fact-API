@@ -11,7 +11,16 @@ module.exports = function(app, databaseObj) {
 
   //GET Status for default path
   app.get('/', (req, res) => {
-    var item = {"Status":"Say thanks to SOF, API is alive"};
+  var item = {
+    "status":"alive",
+    "message":"say thanks to SOF, API is alive",
+    "possible requests": {
+      "GET /random": "Get a random kannada fact",
+      "GET /facts": "Get an array of random kannada facts [array of size 10]",
+      "POST /fact": "Create/Add a fact on hosted db; requires a json with 'fact' model as body",
+      "PUT /fact/:id": "Update a fact using (integer)id on hosted DB; requires a json with 'fact' model as body",
+      "DELETE /fact/:id": "Delete a fact with (integer)id on hosted DB"
+    }};
     res.send(item);
   });
 
@@ -26,9 +35,12 @@ module.exports = function(app, databaseObj) {
       const details = { '_id': getid };
       db.collection('factslist').findOne(details, (err, item) => {
         if (err) {
-          res.send({'error':'An error has occurred while fetching data'});
+          res.send({ "status" : "failure", 'error':'An error has occurred while fetching data' });
         } else {
-          res.send(item);
+          if (item)
+            res.send(item);
+          else
+            res.send({ "status" : "undetermined", 'error':'An error has occurred while fetching data' });
         }
       });
   });
@@ -46,7 +58,7 @@ module.exports = function(app, databaseObj) {
           }
         });
   });
-  
+
   // POST a random fact
   app.post('/fact', (req, res) => {
     const fact = {
@@ -56,15 +68,24 @@ module.exports = function(app, databaseObj) {
                   imgurl: req.body.imgurl
                  };
     if (fact._id == null || !typeof parseInt(fact.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
-      res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
+      res.send({
+        "status" : "failure",
+        "error": "An error has occurred while posting data, Please request body should have valid data",
+        "valid data" : {
+          "id" : "an integer",
+          "enfact" : "string",
+          "knfact" : "string",
+          "imgurl" : "string"
+        }
+      });
     }
     else {
       db.collection('factslist').insert(fact, (err, result) => {
         if (err) {
-          res.send({ 'error': 'An error has occurred while posting data, possibly a redundant data/ an authorization error' });
+          res.send({ "status" : "failure", "error": "An error has occurred while posting data, possibly a redundant data or an authorization error" });
           console.log(err);
         } else {
-          res.send(result.ops[0]);
+          res.send({ "status" : "success", "fact added" : result.ops[0] });
         }
       });
     }
@@ -75,9 +96,9 @@ module.exports = function(app, databaseObj) {
     const details = { _id: req.params.id };
     db.collection('factslist').remove(details, (err, item) => {
       if (err) {
-        res.send({'error':'An error has occurred while deleting data'});
+        res.send({ "status" : "failure", "error":"An error has occurred while deleting data" });
       } else {
-        res.send({'fact': req.params.id + ' deleted'});
+        res.send({ "status" : "success", "fact": req.params.id + " deleted" });
       }
     });
   });
@@ -90,12 +111,12 @@ module.exports = function(app, databaseObj) {
                    imgurl: req.body.imgurl
                  };
     if ( !typeof parseInt(req.params.id) === 'number' || fact.knfact== null || fact.knfact== "" || fact.enfact== null || fact.enfact== ""){
-      res.send({ 'error': 'An error has occurred while posting data, Please provide valid data' });
+      res.send({ "status" : "failure", "error": "An error has occurred while posting data, Please provide valid data" });
     }
     else {
       db.collection('factslist').update(replace, fact, (err, result) => {
         if (err) {
-            res.send({'error':'An error has occurred while updating data'});
+            res.send({ "status" : "failure", "error":"An error has occurred while updating data" });
         } else {
             res.send(fact);
         }
