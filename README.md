@@ -23,11 +23,16 @@ Random kannada fact with a [json structure](#get-random-fact) can be fetched ins
 
 
 ## Setup
-  Need a remote or local mongodb depolyment. Can use [mlab](http://mlab.com) for free tier, easy remote deployment. Create a local db or on mlab and then import the JSON in config dir.
+  Need a remote or local mongodb depolyment. Can use [mlab](http://mlab.com) for free tier, easy remote deployment. Create a local db or a db on mlab and then import the JSON in config dir.
 
 ```sh
 $ mongoimport  --uri="mongodb://<db_username>:<db_usr_passwd>@<remote path to db>:63367/<db_name>"  --collection <db_collection_name> --file importdb.json --jsonArray
 ```
+Import data to a local db using `mongoimport` command as below, After running ```mongod``` in a new terminal instance.
+```sh
+$ mongoimport  --uri="mongodb://127.0.0.1:27017/factsdb"  --collection "factslist" --file importdb.json --jsonArray
+```
+
 Create a `db.js` file under config directory to export Mongodb/ mlab url OR alternatively use the db.js_example. The file should have a url exported like
 
 ```sh
