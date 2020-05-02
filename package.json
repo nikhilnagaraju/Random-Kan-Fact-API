@@ -2,19 +2,32 @@
   "name": "randomfacts",
   "version": "1.0.0",
   "description": "A simple REST api to fetch a Random kannada fact",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "author": "Nikhil N",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "mongodb": "^3.0.1",
-    "morgan": "^1.9.0"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.7",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.7"
+    "ava": "^3.8.1",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-ava": "^10.3.0",
+    "eslint-plugin-extra-rules": "0.0.0-development",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "esm": "^3.2.25",
+    "nodemon": "^2.0.3",
+    "nyc": "^15.0.1",
+    "standard-version": "^7.1.0"
   }
 }
