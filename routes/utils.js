@@ -1,15 +1,18 @@
-const ObjectID = require('mongodb').ObjectID;
-const FACTS_COLLECTION = 'factslist';
+const ObjectID = require("mongodb").ObjectID;
+const FACTS_COLLECTION = "factslist";
 
 const normalizeCount = (size) => {
-  if(!size) size = 10;
-  if(size > 20) size = 20;
+  if (!size) size = 10;
+  if (size > 20) size = 20;
   return size;
 };
 
 const getRandomFacts = (db, size) => {
   const querySize = normalizeCount(size);
-  return db.collection(FACTS_COLLECTION).aggregate([{ $sample: { size: querySize } }]).toArray();
+  return db
+    .collection(FACTS_COLLECTION)
+    .aggregate([{ $sample: { size: querySize } }])
+    .toArray();
 };
 
 const getFactByID = (db, id) => {
@@ -25,7 +28,13 @@ const removeFactByID = (db, id) => {
 };
 
 const updateFactByID = (db, id, data) => {
-  return db.collection(FACTS_COLLECTION).findOneAndUpdate({ _id: ObjectID(id) }, { $set: data }, { returnOriginal: false });
+  return db
+    .collection(FACTS_COLLECTION)
+    .findOneAndUpdate(
+      { _id: ObjectID(id) },
+      { $set: data },
+      { returnOriginal: false }
+    );
 };
 
 module.exports = {
@@ -34,5 +43,5 @@ module.exports = {
   getFactByID,
   createFact,
   removeFactByID,
-  updateFactByID
+  updateFactByID,
 };
