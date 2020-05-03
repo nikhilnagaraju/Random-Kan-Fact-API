@@ -1,6 +1,0 @@
-//the 'mclient' db_user has read-only access to db and results in authorization error response on making POST, DELETE, PUT
-
-module.exports = {
-  localurl : "mongodb://127.0.0.1:27017/factsdb",
-  url : "mongodb://mclient:mclient@ds135917.mlab.com:35917/factsdb"
-};

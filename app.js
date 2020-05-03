@@ -1,3 +1,4 @@
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -5,18 +6,18 @@ const MongoClient = require("mongodb").MongoClient;
 const app = express();
 const router = require("./routes/fact_routes");
 
-if (process.env.NODE_ENV !== "prod") {
+if (fs.existsSync("./.env")) {
   require("dotenv").config();
 }
 
-const port = process.env.PORT || 8000;
-const config = {
-  DB_HOST: process.env.DB_HOST || "localhost",
-  DB_PORT: process.env.DB_PORT || "27017",
-  DB_NAME: process.env.DB_NAME || "factsdb",
-};
-const dbURL = `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}`;
-const mclient = new MongoClient(dbURL, { useUnifiedTopology: true });
+const PORT = process.env.PORT || 8000;
+const DB_HOST = process.env.DB_HOST || "localhost";
+const DB_PORT = process.env.DB_PORT || "27017";
+const DB_NAME = process.env.DB_NAME || "factsdb";
+const dbURL = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const mclient = new MongoClient(dbURL, {
+  useUnifiedTopology: true,
+});
 
 app.use(bodyParser.json());
 app.use(morgan("dev"));
@@ -33,10 +34,11 @@ app.use(router);
 mclient
   .connect()
   .then((dbConn) => {
-    app.config = config;
-    app.db = dbConn.db(config.DB_NAME);
-    app.listen(port, () => {
-      console.log(`Server running on ${port}`);
+    app.db = dbConn.db(DB_NAME);
+    app.listen(PORT, () => {
+      console.log(
+        `Server running in ${process.env.NODE_ENV || "DEV"} mode on ${PORT}`
+      );
     });
   })
   .catch((dbErr) => {
