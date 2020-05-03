@@ -23,7 +23,7 @@
     "rules": {
         "quotes": [
             "error",
-            "single"
+            "double"
         ],
         "prefer-arrow-callback": [
             "error",
@@ -44,29 +44,7 @@
         "no-undef": 1,
         "no-unused-vars": 1,
         "extra-rules/no-commented-out-code": "warn",
-        "keyword-spacing": [
-            "error",
-            {
-                "before": false,
-                "after": false,
-                "overrides": {
-                    "const": {
-                        "after": true
-                    },
-                    "return": {
-                        "after": true
-                    },
-                    "case": {
-                        "after": true
-                    }
-                }
-            }
-        ],
         "space-before-function-paren": 0,
-        "space-before-blocks": [
-            "error",
-            "never"
-        ],
         "camelcase": 0,
         "handle-callback-err": [
             "error",
