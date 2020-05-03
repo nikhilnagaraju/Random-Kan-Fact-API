@@ -1,4 +1,3 @@
-/* eslint-disable extra-rules/no-commented-out-code */
 const router = require("express").Router();
 const {
   normalizeCount,
@@ -9,7 +8,6 @@ const {
   updateFactByID,
 } = require("./utils");
 
-// let router.get(aa) = 2;
 router.get("/", (_req, res) => {
   const data = {
     status: "ok",
@@ -62,6 +60,7 @@ router.get("/facts", async (req, res) => {
   }
 });
 
+// GET a Fact by ID
 router.get("/facts/:id", async (req, res) => {
   if (!req.params.id) {
     res.status(400).json({
@@ -87,7 +86,7 @@ router.get("/facts/:id", async (req, res) => {
   return {};
 });
 
-// POST a random fact
+// POST a fact
 router.post("/facts", async (req, res) => {
   if (!req.body.fact_en || !req.body.fact_kn) {
     res.status(400).json({
@@ -112,26 +111,7 @@ router.post("/facts", async (req, res) => {
   }
 });
 
-// DELETE a Random fact with id
-router.delete("/facts/:id", async (req, res) => {
-  if (!req.params.id) {
-    res.status(400).json({
-      status: "error",
-      message: "Invalid Document ID",
-    });
-  }
-  try {
-    await removeFactByID(req.app.db, req.params.id);
-    res.json({ removedId: req.params.id });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: `Failed to delete Document with id ${req.params.id}`,
-    });
-  }
-});
-
-// UPDATE a Random fact with id
+// UPDATE a fact with id
 router.put("/facts/:id", async (req, res) => {
   if (!req.body.fact_en || !req.body.fact_kn) {
     res.status(400).json({
@@ -152,6 +132,25 @@ router.put("/facts/:id", async (req, res) => {
     res.status(400).json({
       status: "error",
       message: "Failed to update fact",
+    });
+  }
+});
+
+// DELETE a fact with id
+router.delete("/facts/:id", async (req, res) => {
+  if (!req.params.id) {
+    res.status(400).json({
+      status: "error",
+      message: "Invalid Document ID",
+    });
+  }
+  try {
+    await removeFactByID(req.app.db, req.params.id);
+    res.json({ removedId: req.params.id });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: `Failed to delete Document with id ${req.params.id}`,
     });
   }
 });
