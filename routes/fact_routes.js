@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { checkWriteAccess } = require("./permission");
 const {
   normalizeCount,
   getRandomFacts,
@@ -87,7 +88,7 @@ router.get("/facts/:id", async (req, res) => {
 });
 
 // POST a fact
-router.post("/facts", async (req, res) => {
+router.post("/facts", checkWriteAccess, async (req, res) => {
   if (!req.body.fact_en || !req.body.fact_kn) {
     res.status(400).json({
       status: "error",
@@ -112,7 +113,7 @@ router.post("/facts", async (req, res) => {
 });
 
 // UPDATE a fact with id
-router.put("/facts/:id", async (req, res) => {
+router.put("/facts/:id", checkWriteAccess, async (req, res) => {
   if (!req.body.fact_en || !req.body.fact_kn) {
     res.status(400).json({
       status: "error",
@@ -137,7 +138,7 @@ router.put("/facts/:id", async (req, res) => {
 });
 
 // DELETE a fact with id
-router.delete("/facts/:id", async (req, res) => {
+router.delete("/facts/:id", checkWriteAccess, async (req, res) => {
   if (!req.params.id) {
     res.status(400).json({
       status: "error",
