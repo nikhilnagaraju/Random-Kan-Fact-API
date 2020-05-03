@@ -1,6 +1,10 @@
 {
-    "extends": "standard",
+    "extends": [
+        "standard",
+        "prettier"
+    ],
     "plugins": [
+        "prettier",
         "standard",
         "promise",
         "extra-rules",
@@ -72,6 +76,7 @@
             "error",
             "always"
         ],
+        "prettier/prettier": "error",
         "ava/assertion-arguments": "error",
         "ava/hooks-order": "error",
         "ava/max-asserts": [
