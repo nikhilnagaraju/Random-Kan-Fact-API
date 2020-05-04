@@ -11,11 +11,9 @@ if (fs.existsSync("./.env")) {
 }
 
 const PORT = process.env.PORT || 8000;
-const DB_HOST = process.env.DB_HOST || "localhost";
-const DB_PORT = process.env.DB_PORT || "27017";
+const DB_URL = process.env.DB_URL || "mongodb://localhost:27017";
 const DB_NAME = process.env.DB_NAME || "factsdb";
-const dbURL = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
-const mclient = new MongoClient(dbURL, {
+const mclient = new MongoClient(DB_URL, {
   useUnifiedTopology: true,
 });
 
