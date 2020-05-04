@@ -8,7 +8,9 @@
     "serve": "nodemon app.js",
     "prettify": "prettier --write './**/*.js'",
     "prettify-check": "prettier --check './**/*.js'",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "prerelease": "npm run lint",
+    "release": "standard-version"
   },
   "author": "Nikhil N",
   "license": "MIT",
