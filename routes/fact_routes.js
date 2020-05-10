@@ -15,12 +15,11 @@ router.get("/", (_req, res) => {
     message: "Why say Hello world!, when you can say HELLO UNIVERSE!",
     endpoints: {
       "GET /random": "Get a random kannada fact",
-      "GET /facts": "Get an array of random kannada facts [array of size 10]",
-      "POST /fact":
-        "Create/Add a fact on hosted db; requires a json with 'fact' model as body",
-      "PUT /fact/:id":
-        "Update a fact using (integer)id on hosted DB; requires a json with 'fact' model as body",
-      "DELETE /fact/:id": "Delete a fact with (integer)id on hosted DB",
+      "GET /facts?count=10": "Get an array of random kannada facts",
+      "GET /facts/<id>": "Get fact by id",
+      "POST /facts": "Create/Add a fact",
+      "PUT /facts/<id>": "Update a fact by id",
+      "DELETE /facts/<id>": "Delete a fact by id",
     },
   };
   res.json(data);
