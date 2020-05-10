@@ -1,179 +1,243 @@
 # Random Kannada Fact API
 
-A simple REST API to fetch random kannada fact.
-The API is hosted on [Heroku](https://heroku.com) at [https://random-kan-fact.herokuapp.com/](https://random-kan-fact.herokuapp.com/) with a remote db hosted on [mlab](https://mlab.com).
+A simple REST API to fetch random kannada facts.
+The APIs are hosted on [Heroku](https://heroku.com) at [https://random-kan-fact.herokuapp.com/](https://random-kan-fact.herokuapp.com) with a remote Mongo hosted on [Mongo Atlas](https://www.mongodb.com/cloud/atlas). Can perform CRUD operations aswell.
 
-Checkout the API demo at [http://imnikhil.xyz/api_demo](http://imnikhil.xyz/api_demo).
+Checkout the API demo at [https://kannadafactsapi.firebaseapp.com](https://kannadafactsapi.firebaseapp.com)
 
-Random kannada fact with a [json structure](#get-random-fact) can be fetched instantly with this endpoint: 
-
-[https://random-kan-fact.herokuapp.com/random](https://random-kan-fact.herokuapp.com/random)
-
-
-- [Setup](#setup)
-	- [Required Dependencies](#required-dependencies)
-- [To Develop or debug](#to-debug-the-api)
-- [API overview](#api-overview)
-	- [GET random fact](#get-random-fact)
-	- [GET an array of random facts](#get-list-of-random-facts)
-	- [POST fact](#post-fact)
-	- [PUT fact](#put-fact)
-	- [DELETE fact](#delete-fact)
-- [Note](#note)
+- [API Documentation](#api-documentation)
+	- [Get random fact](#get-random-fact)
+	- [Get an array of facts](#get-an-array-of-facts)
+	- [Get fact by id](#get-fact-by-id)
+	- [Create a fact](#create-a-fact)
+	- [Update fact](#update-fact)
+	- [Delete Fact](#delete-fact)
+- [API Errors](#api-errors)
+- [Development](#development)
+	- [Setup](#setup)
+	- [Environment config](#environment-config)
+- [Notes](#notes)
 
 
-## Setup
-  Need a remote or local mongodb depolyment. Can use [mlab](http://mlab.com) for free tier, easy remote deployment. Create a local db or a db on mlab and then import the JSON in config dir.
+## API Documentation
 
-```sh
-$ mongoimport  --uri="mongodb://<db_username>:<db_usr_passwd>@<remote path to db>:63367/<db_name>"  --collection <db_collection_name> --file importdb.json --jsonArray
-```
-Import data to a local db using `mongoimport` command as below, After running ```mongod``` in a new terminal instance.
-```sh
-$ mongoimport  --uri="mongodb://127.0.0.1:27017/factsdb"  --collection "factslist" --file importdb.json --jsonArray
-```
+The Base url is as below and APIs are RESTful and returns JSON response.
 
-Create a `db.js` file under config directory to export Mongodb/ mlab url OR alternatively use the db.js_example. The file should have a url exported like
+`BASEURL` : `https://random-kan-fact.herokuapp.com`
 
-```sh
-module.exports = {
-  url : "mongodb://<mlab_username>:<mlab_user_password>@<hosted mlab domain>:35917/<db_name>"
-};
-```
+The example endpoints for all types of operation and example JSON data returned by the API are as below:
 
-An actual working db url/path looks like (can use local path too)
-
-`url : "mongodb://mclient:mclient@ds135917.mlab.com:35917/factsdb"`
-
-
-## Required Dependencies
-  - Express - for server & routing
-  - MongoDB - for Database
-  - Nodemon - to monitor code changes & build
-
-
-## To Debug the API
-Clone the repo,
-
- 1. `npm install`
- 2. `npm start` to compile and run a dev server on [http://localhost:8000](http://localhost:8000). or Alternatively run `node server.js` or use `nodemon server.js`
- 3. Make API requests to suitable endpoints using postman or your app and debug.
-
-
-## API overview
-
-The API is RESTFUL and returns results as JSON. You should always url-encode parameter values when using the API. The examples in this document do *not* url-encode parameter values. The example endpoints for all types of operation and JSON formats returned by the API are as below:
-
-### GET random fact
-
-| End Point | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/random` | no parameters | Fetch a random kannada fact |
-
-    http://localhost:8000/random
-    http://random-kan-fact.herokuapp.com/random
-
-The end point would return a random Kannada fact, a corresponding English translated fact and a relevant img url as JSON object as below.
-```sh
+#### Fact Object structure
+```json
 {
-    "_id": "157",
-    "enfact": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
-    "knfact": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
+    "_id": "string",
+    "fact_en": "string",
+    "fact_kn": "string",
+    "imgurl": "string"
+}
+```
+
+### Get random fact
+
+The end point will return a singleton JSON object containing a random Kannada fact, a corresponding English translation and a Relevant img url along with a unique `_id` as below. 
+
+| Method | End Point | Params | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `GET` | `/random` | - | Fetch a random kannada fact |
+
+    https://random-kan-fact.herokuapp.com/random
+
+JSON Response
+```json
+{
+    "_id": "5ead3c5fefee4c5a27aa4fd7",
+    "fact_en": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
+    "fact_kn": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
     "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
 }
 ```
 
-### GET list of random facts
+### Get an array of facts
 
-| End Point | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/facts` | no parameters | Returns a JSON array object containing random fact objects |
+The end point returns a JSON array of [`fact` objects](#Fact-Object-structure) with key `facts` and `count` attribute indicating number of objects in `facts` array. The endpoint accepts a optional `count` parmas(`int`) which if not specified is considered as `10`.
 
-    http://localhost:8000/facts
-    http://random-kan-fact.herokuapp.com/facts
+| Method | End Point | Params | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `GET` | `/facts` | `count`: `int` <br>`1<= int <= 20`  | Returns a JSON array object containing random fact objects |
 
-The end point returns a JSON array object with key `randomArray` and contains 10 random Kannada fact objects as below.
-```
+    https://random-kan-fact.herokuapp.com/facts
+    https://random-kan-fact.herokuapp.com/facts?count=5
+
+JSON Response
+```json
 {
- "randomArray": [
-	{
-            "_id": "157",
-            "enfact": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
-            "knfact": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
-            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
-    	},
-	{
-	    "_id": "254",
-	    "enfact": "The first Kannada serial 'Sihikahi' (meaning bittersweet in Kannada) was produced and directed by H N K Murthy.",
-	    "knfact": "ಕನ್ನಡದ ಮೊದಲ ಸರಣಿ(ಸೀರಿಯಲ್) “ಸಿಹಿಕಹಿ”ಯನ್ನು ಎಚ್.ಎನ್.ಕೆ ಮೂರ್ತಿ ನಿರ್ಮಿಸಿ, ನಿರ್ದೇಶಿಸಿದರು. ",
-	    "imgurl": ""
-	  },
-		{
-	    "_id": "206",
-	    "enfact": "Hubli is known as Chota Mumbai",
-	    "knfact": "ಹುಬ್ಬಳ್ಳಿಯನ್ನು ಛೋಟಾ ಮುಂಬೈ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ ",
-	    "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/206.jpg"
-	  }
-	]
+    "facts": [
+        {
+            "_id": "5ead3c5fefee4c5a27aa4fd7",
+            "fact_en": "Mirjan Fort was built by Queen Chennabhairadevi of Gersoppa.",
+            "fact_kn": "ಗೇರಸೊಪ್ಪದ ರಾಣಿ ಚೆನ್ನಭೈರದೇವಿ ರವರು ಮೀರ್ಜನ್ ಬಂದರುನ್ನು ನಿರ್ಮಿಸಿದರು. ",
+            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/172.jpg"
+        },
+        {
+            "_id": "5ead3c5fefee4c5a27aa5017",
+            "fact_en": "Ilakal town of Bagalkot is famous for the 'Ilakal Saree'.",
+            "fact_kn": "ಬಾಗಲಕೋಟೆ ಇಳಕಲ್ ಪಟ್ಟಣ ‘ಇಳಕಲ್ ಸೀರೆ'ಗೆ ಹೆಸರುವಾಸಿಯಾಗಿದೆ. ",
+            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/236.jpg"
+        },
+        {
+            "_id": "5ead3c5fefee4c5a27aa4f72",
+            "fact_en": "Mysore Paints and Varnish Limited is the sole supplier of Voter's ink in India.",
+            "fact_kn": "ಭಾರತದಲ್ಲಿ 'ಮೈಸೂರು ಪೇಂಟ್ಸ್ ಅಂಡ್ ವಾರ್ನಿಶ್ ಲಿಮಿಟೆಡ್' ಮಾತ್ರವೆ ಮತದಾರರ ಶಾಯಿ ಸರಬರಾಜು ಮಾಡುವ ಏಕೈಕ ಘಟಕ. ",
+            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/71.jpg"
+        },
+        {
+            "_id": "5ead3c5fefee4c5a27aa4ff6",
+            "fact_en": "Da Ra Bendre is known as Varakavi meaning Gifted Poet.",
+            "fact_kn": "ಪ್ರತಿಭಾವಂತ ಕವಿ ದಾ. ರಾ. ಬೇಂದ್ರೆಯನ್ನು ವರಕವಿ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ. ",
+            "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/203.jpg"
+        },
+        ...
+    ],
+    "count": 10
 }
 ```
 
-### POST fact
+### Get fact by id
 
-| End Point  | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/fact` | `id`,  `knfact`,  `enfact`,  `imgurl` - optional | Posts a kannada fact document to db |
+The end point will return a singleton JSON object containing a random Kannada fact, a corresponding English translation and a Relevant img url along with a unique `_id` as below. 
 
+| Method | End Point | Params | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `GET` | `/facts/<id>` | - | Fetch a fact by id |
 
-    http://localhost:8000/fact
-    http://random-kan-fact.herokuapp.com/fact
+    https://random-kan-fact.herokuapp.com/random/5ead3c5fefee4c5a27aa4fd7
 
-The end point would return the posted fact object on success as below, or would return an authorization, redundant error if any.
-```sh
+JSON Response
+```json
 {
-  "_id": "35",
-  "enfact": "The first power station in Asia was set up in Karnataka at Shivanasamudra in 1902 to produce hydroelectric power.",
-  "knfact": "ಏಷ್ಯಾದ ಮೊದಲ ಪವರ್ ಸ್ಟೇಷನ್ ಅನ್ನು 1902 ರಲ್ಲಿ ಜಲವಿದ್ಯುತ್ ಶಕ್ತಿ ಉತ್ಪಾದಿಸಲು  ಶಿವನ ಸಮುದ್ರ, ಕರ್ನಾಟಕದಲ್ಲಿ  ಸ್ಥಾಪಿಸಲಾಯಿತು. ",
+    "_id": "5ead3c5fefee4c5a27aa4fd7",
+    "fact_en": "Karnataka witnesses about 12,000 Yakshagana performances every year.",
+    "fact_kn": "ಕರ್ನಾಟಕ ರಾಜ್ಯವು ಪ್ರತಿ ವರ್ಷ ಸುಮಾರು 12,000 ಯಕ್ಷಗಾನ ಪ್ರದರ್ಶನಗಳಿಗೆ ಸಾಕ್ಷಿಯಾಗುತ್ತದೆ. ",
+    "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/157.jpg"
+}
+```
+
+### Create a fact
+
+The Endpoint requires raw JSON containing `fact_kn`, `fact_en` and returns a (fact Object)[#Fact-Object-structure]
+
+| Method  | End Point  | Data | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `POST` | `/facts` | `fact_kn` *<br>`fact_en` *<br>`imgurl` - optional | Posts a kannada fact document to db |
+
+
+    https://random-kan-fact.herokuapp.com/facts
+
+JSON Response
+```json
+{
+  "_id": "5ead3c5fefee4c5a27aa4f72",
+  "fact_en": "The first power station in Asia was set up in Karnataka at Shivanasamudra in 1902 to produce hydroelectric power.",
+  "fact_kn": "ಏಷ್ಯಾದ ಮೊದಲ ಪವರ್ ಸ್ಟೇಷನ್ ಅನ್ನು 1902 ರಲ್ಲಿ ಜಲವಿದ್ಯುತ್ ಶಕ್ತಿ ಉತ್ಪಾದಿಸಲು  ಶಿವನ ಸಮುದ್ರ, ಕರ್ನಾಟಕದಲ್ಲಿ  ಸ್ಥಾಪಿಸಲಾಯಿತು.",
   "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/35.jpg"
 }
 ```
-### PUT fact
 
-| End Point  | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/fact/<id>` | `knfact`,  `enfact`,  `imgurl` - optional | update a fact document with reference to id in db |
+### Update fact
+PUT API requires `id` of the document and data. The end point updates a fact document and returns the updated [fact object](#fact-object-structure) on success as below.
+
+| Method | End Point  | Data | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `PUT` | `/facts/<id>` | `fact_en` *<br>`fact_kn` *<br>`imgurl` - optional | update a fact document with reference to id in DB |
 
 
-    http://localhost:8000/fact/250
-    http://random-kan-fact.herokuapp.com/fact/250
+    https://random-kan-fact.herokuapp.com/facts/5ead3c5fefee4c5a27aa4f72
 
-The end point would return the updated fact object on success as below, or would return an error if any.
-```
+JSON Response
+```json
 {
-	"enfact": "The district of Kodagu has no railway track within it.",
-	"knfact": "ಕೊಡಗು ಜಿಲ್ಲೆಯು ಯಾವುದೇ ರೈಲ್ವೆ ಟ್ರ್ಯಾಕ್ ಅನ್ನು ಹೊಂದಿಲ್ಲ. ",
-	"imgurl": ""
+  "_id": "5ead3c5fefee4c5a27aa4f72",
+  "fact_en": "The first power station in Asia was set up in Karnataka at Shivanasamudra in 1902 to produce hydroelectric power.",
+  "fact_kn": "ಏಷ್ಯಾದ ಮೊದಲ ಪವರ್ ಸ್ಟೇಷನ್ ಅನ್ನು 1902 ರಲ್ಲಿ ಜಲವಿದ್ಯುತ್ ಶಕ್ತಿ ಉತ್ಪಾದಿಸಲು  ಶಿವನ ಸಮುದ್ರ, ಕರ್ನಾಟಕದಲ್ಲಿ  ಸ್ಥಾಪಿಸಲಾಯಿತು.",
+  "imgurl": "https://raw.githubusercontent.com/nikhilnagaraju/smplrepo/master/assets/35.jpg"
 }
 ```
 
-### DELETE fact
+### Delete fact
+End point performs hard delete on DB and would return an object with the deleted fact-id on success.
 
-| End Point  | Requires | Description |
-|:-----------|:---------------|-------------|
-| `/fact/<id>` | no parameters | delete a fact document with reference to id in db |
+| Method  | End Point  | params/data | Description |
+|:-----------|:-----------|:---------------|-------------|
+| `DELETE`| `/facts/<id>` | - | Delete a fact document with reference to id in db |
 
-    http://localhost:8000/fact/250
-    http://random-kan-fact.herokuapp.com/fact/250
+    http://random-kan-fact.herokuapp.com/facts/5ead3c5fefee4c5a27aa4f72
 
-The end point would return an object with the deleted fact-id on success as below, or would return an error if any.
-```
+JSON Response
+```json
 {
-	"fact": "250 deleted"
+	"removedId": "5ead3c5fefee4c5a27aa4f72"
 }
 ```
 
-## Note
--  *The given example credentials for [mlab](http://mlab.com) have **read-only** permission and hence write operations like `POST`,  `UPDATE`, `DELETE`  wont work, these will return an error object with authorisation error.*
--  If you need better performance or if you are using it for commercial use, host the API and DB in prod environment and don't use this sandox hosted db.
+### API Errors
+* On Invalid `id` for [Get fact by id](#get-fact-by-id), [Update fact](#update-fact), [Delete fact](#delete-fact) a `400` status code with error response is sent as below
+```json
+{
+    "status": "error",
+    "message": "Invalid Document ID",
+}
+```
+
+* For [Get an array of facts](#get-an-array-of-facts), [Get random fact](#get-random-fact) if the DB contains no documents or docs less than the requested `count`, a `400` status code with error response is sent as below
+```json
+{
+    "status": "error",
+    "message": "No Data found.",
+}
+```
+
+* For [Create a fact](#create-a-fact), [Update fact](#update-fact) APIs if the data doesn't contain either of `fact_en`, `fact_kn` attributes an error response with `400` status code is sent.
+
+* For APIs with write operations like [Create a fact](#create-a-fact), [Update fact](#update-fact), [Delete fact](#delete-fact) `write-premission` is disabled in deployment and can be toggled using [Environment config](#environment-config). If disabled, API results a `400` status code with response as below
+```json
+{
+    "status": "error",
+    "message": "Access denied for write operation",
+}
+```
+
+## Development
+  * Requires `mongodb` and `node 12+`
+  * Install dependancies `npm install`
+  * To run server `npm start`
+  * To run dev server with watch `npm run serve`
+  * To format code `npm run prettify`
+  * Run linter `npm run lint` which uses EcmaScript 2017 standard rules.
+
+### Setup
+
+Ensure `mongod` service is started and then restore the `dump` to required mongo host
+```sh
+mongorestore dump
+```
+#### Environment config
+* App uses `.env` config if the file is present in app-root, else uses the `process.env` variables passed for `node app.js` command
+* copy `.env.example` as `.env` file to app-root
+```sh
+cp .env.example .env
+```
+* If config config variable are not preset in `.env` file and no `process.env` variables are specified, defaults will be used.
+
+| Config  | Description  | defaults |
+|:-----------|:-----------|:---------------|
+| `PORT` | Server port  | `8989` |
+| `DB_URL` | Mongo DB Connection URL (may contain db user and password) | `mongodb://localhost:27017` |
+| `DB_NAME` | DB name  | `factsdb` |
+| `WRITE_ALLOWED` | Write permission on APIs<br> Write allowed - `1`<br> Block writes - `0` | `1` |
+| `NODE_ENV` | App Mode | `DEV` |
+
+
+## Notes
+-  If in need of better performance or commercially used, host the API and DB in prod environment and don't use this sandox hosted db.
 -  If found any bugs with the API report in [issue tracker](https://github.com/nikhilnagaraju/Random-Kan-Fact-API/issues).
 -  Licensed under [GNU GPL v3.0](LICENSE).
